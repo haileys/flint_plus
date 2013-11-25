@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include "flint/FlintAppDelegate.h"
+#include "flint/FlintTextView.h"
 
 FlintAppDelegate*
 flint;
@@ -9,7 +10,6 @@ flint_plus_init()
 {
     flint = (FlintAppDelegate*)[NSApplication sharedApplication].delegate;
 
-    [flint showAbout: nil];
 
     fprintf(stderr, "FlintPlus loaded!\n");
 }
