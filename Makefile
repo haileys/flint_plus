@@ -1,8 +1,8 @@
 FLINT_PATH = /Applications/Flint.app/Contents/MacOS/Flint
 
-OBJECTS = src/main.o src/hackery.o
+OBJECTS = src/main.o src/hackery.o src/text_view.o
 
-CFLAGS = -Wno-objc-property-no-attribute -Wno-incomplete-implementation -fPIC
+CFLAGS = -Wno-objc-property-no-attribute -Wno-incomplete-implementation -fPIC -g
 LDFLAGS = -dynamiclib -undefined dynamic_lookup
 
 .PHONY: clean run

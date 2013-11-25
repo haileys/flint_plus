@@ -7,26 +7,15 @@
 FlintAppDelegate*
 flint;
 
-@interface flint_plus_FlintAppDelegate : NSObject
-- original_showAbout:(id)arg1;
-@end
-
-@implementation flint_plus_FlintAppDelegate
-- (void)showAbout:(id)arg1
-{
-    printf("showing about!\n");
-    [self original_showAbout: arg1];
-}
-@end
+void
+flint_plus_init_text_view();
 
 static void
 flint_plus_init()
 {
     flint = (FlintAppDelegate*)[NSApplication sharedApplication].delegate;
 
-    flint_plus_patch("FlintAppDelegate", "showAbout:");
-
-    [flint showAbout: nil];
+    flint_plus_init_text_view();
 
     fprintf(stderr, "FlintPlus loaded!\n");
 }
