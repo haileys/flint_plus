@@ -1,9 +1,9 @@
 FLINT_PATH = /Applications/Flint.app/Contents/MacOS/Flint
 
-OBJECTS = src/main.o
+OBJECTS = src/main.o src/hackery.o
 
-CFLAGS = -Wno-objc-property-no-attribute
-LDFLAGS = -shared -undefined suppress -flat_namespace
+CFLAGS = -Wno-objc-property-no-attribute -Wno-incomplete-implementation -fPIC
+LDFLAGS = -dynamiclib -undefined dynamic_lookup
 
 .PHONY: clean run
 
@@ -16,7 +16,7 @@ clean:
 run: flint_plus.dylib
 	DYLD_INSERT_LIBRARIES=$< $(FLINT_PATH)
 
-%.o: %.m src/*.h
+%.o: %.m src/*.h Makefile
 	$(CC) -o $@ $(CFLAGS) -c $<
 
 flint_class_dump.h: $(FLINT_PATH)
