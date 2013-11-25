@@ -1,0 +1,3 @@
+*.o
+
+/flint_plus.dylib
