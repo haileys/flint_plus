@@ -1,48 +1,15 @@
 #import <AppKit/AppKit.h>
 #import "flint/FlintTextView.h"
 #import "hackery.h"
-
-static NSMutableDictionary*
-fake_ivar_dict;
-
-static NSMutableDictionary*
-get_fake_ivar_dict(id object)
-{
-    id key = [NSNumber numberWithInt:(int)object];
-    NSMutableDictionary* dict = [fake_ivar_dict objectForKey:key];
-    if(dict == nil) {
-        dict = [NSMutableDictionary dictionary];
-        [fake_ivar_dict setObject:dict forKey:key];
-    }
-    return dict;
-}
-
-static void
-destroy_fake_ivar_dict(id object)
-{
-    id key = [NSNumber numberWithInt:(int)object];
-    [fake_ivar_dict removeObjectForKey:key];
-}
-
-static id
-get_fake_ivar(id object, NSString* name)
-{
-    return [get_fake_ivar_dict(object) objectForKey:name];
-}
-
-static void
-set_fake_ivar(id object, NSString* name, id value)
-{
-    [get_fake_ivar_dict(object) setObject:value forKey:name];
-}
+#import "fake_ivar.h"
 
 static NSMutableArray*
 get_history(id object)
 {
-    NSMutableArray* history = get_fake_ivar(object, @"history");
+    NSMutableArray* history = flint_plus_get_fake_ivar(object, @"history");
     if(history == nil) {
         history = [NSMutableArray array];
-        set_fake_ivar(object, @"history", history);
+        flint_plus_set_fake_ivar(object, @"history", history);
     }
     return history;
 }
@@ -50,13 +17,13 @@ get_history(id object)
 static int
 get_position(id object)
 {
-    return [(NSNumber*)get_fake_ivar(object, @"position") intValue];
+    return [(NSNumber*)flint_plus_get_fake_ivar(object, @"position") intValue];
 }
 
 static void
 set_position(id object, int position)
 {
-    set_fake_ivar(object, @"position", [NSNumber numberWithInt:position]);
+    flint_plus_set_fake_ivar(object, @"position", [NSNumber numberWithInt:position]);
 }
 
 static void
@@ -114,7 +81,7 @@ history_down(FlintTextView* text_view)
 @implementation flint_plus_FlintTextView
 - (void)original_dealloc
 {
-    destroy_fake_ivar_dict(self);
+    flint_plus_fake_ivar_dealloc(self);
     [self original_dealloc];
 }
 
@@ -144,8 +111,5 @@ history_down(FlintTextView* text_view)
 void
 flint_plus_init_text_view()
 {
-    fake_ivar_dict = [NSMutableDictionary dictionary];
-    [fake_ivar_dict retain];
-
     flint_plus_patch("FlintTextView", "keyDown:");
 }
