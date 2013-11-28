@@ -91,16 +91,19 @@ history_down(FlintTextView* text_view)
 
 - (void)keyDown:(NSEvent*)event
 {
+    FlintTextView* ftv = (FlintTextView*)self;
+
     int key_code = [event keyCode];
+
     if(key_code == KEY_ENTER) {
         if(!([event modifierFlags] & (NSShiftKeyMask | NSControlKeyMask | NSAlternateKeyMask))) {
-            add_line_to_history((FlintTextView*)self);
+            add_line_to_history(ftv);
         }
     } else if(key_code == KEY_UP) {
-        history_up((FlintTextView*)self);
+        history_up(ftv);
         return;
     } else if(key_code == KEY_DOWN) {
-        history_down((FlintTextView*)self);
+        history_down(ftv);
         return;
     }
 
