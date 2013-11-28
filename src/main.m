@@ -9,12 +9,16 @@ flint;
 void
 flint_plus_init_text_view();
 
+void
+flint_plus_init_gravatars();
+
 static void
 flint_plus_init()
 {
     flint = (FlintAppDelegate*)[NSApplication sharedApplication].delegate;
 
     flint_plus_init_text_view();
+    flint_plus_init_gravatars();
 
     fprintf(stderr, "FlintPlus loaded!\n");
 }

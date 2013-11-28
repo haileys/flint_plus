@@ -1,6 +1,6 @@
 FLINT_PATH = /Applications/Flint.app/Contents/MacOS/Flint
 
-OBJECTS = src/main.o src/hackery.o src/text_view.o src/fake_ivar.o
+OBJECTS = src/main.o src/hackery.o src/text_view.o src/fake_ivar.o src/gravatars.o
 
 CFLAGS = -Wno-objc-property-no-attribute -Wno-incomplete-implementation -fPIC -g
 LDFLAGS = -dynamiclib -undefined dynamic_lookup
