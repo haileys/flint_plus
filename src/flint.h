@@ -1380,3 +1380,41 @@ flint;
 - (id)init;
 
 @end
+
+@interface FlintCampfireUser : NSObject <NSCoding>
+{
+    NSURL *_avatarURL;
+    NSString *_email;
+    NSString *_name;
+    BOOL _admin;
+    int _type;
+    unsigned long long _uid;
+    NSDate *_updated;
+    NSImage *_avatar;
+}
+
++ (id)userWithDict:(id)arg1;
+@property(retain) NSImage *avatar; // @synthesize avatar=_avatar;
+@property(retain) NSDate *updated; // @synthesize updated=_updated;
+@property unsigned long long uid; // @synthesize uid=_uid;
+@property int type; // @synthesize type=_type;
+@property BOOL admin; // @synthesize admin=_admin;
+@property(copy) NSString *name; // @synthesize name=_name;
+@property(copy) NSString *email; // @synthesize email=_email;
+@property(retain) NSURL *avatarURL; // @synthesize avatarURL=_avatarURL;
+- (void)updateWithUser:(id)arg1;
+- (BOOL)hasExpired;
+- (void)refresh;
+- (id)nicknameForType:(int)arg1;
+- (id)nickname;
+- (id)firstName;
+- (id)initials;
+- (BOOL)matchesCompletion:(id)arg1;
+- (void)fetchAvatar;
+- (id)description;
+- (void)encodeWithCoder:(id)arg1;
+- (id)initWithCoder:(id)arg1;
+- (id)initWithDictionary:(id)arg1;
+- (id)init;
+
+@end
