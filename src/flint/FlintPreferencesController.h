@@ -14,7 +14,7 @@
     NSButton *_autoPlayGifs;
     NSView *_generalView;
     NSPopUpButton *_messagesNotifications;
-//    IGIsolatedCookieWebView *_webView;
+    /*IGIsolatedCookieWebView*/void *_webView;
     NSPopUpButton *_sounds;
     NSButton *_showMenuBarIcon;
     NSView *_notificationsView;
