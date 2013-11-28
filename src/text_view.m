@@ -26,8 +26,8 @@ set_position(id object, int position)
     flint_plus_set_fake_ivar(object, @"position", [NSNumber numberWithInt:position]);
 }
 
-static void
-add_line_to_history(FlintTextView* text_view)
+static bool
+on_message_sent(FlintTextView* text_view)
 {
     set_position(text_view, 0);
 
@@ -36,6 +36,8 @@ add_line_to_history(FlintTextView* text_view)
 
     NSMutableArray* history = get_history(text_view);
     [history insertObject:copy atIndex:0];
+
+    return true;
 }
 
 static void
@@ -97,7 +99,10 @@ history_down(FlintTextView* text_view)
 
     if(key_code == KEY_ENTER) {
         if(!([event modifierFlags] & (NSShiftKeyMask | NSControlKeyMask | NSAlternateKeyMask))) {
-            add_line_to_history(ftv);
+            if(!on_message_sent(ftv)) {
+                [ftv clearText];
+                return;
+            }
         }
     } else if(key_code == KEY_UP) {
         history_up(ftv);
