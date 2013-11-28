@@ -76,16 +76,10 @@ history_down(FlintTextView* text_view)
 }
 
 @interface flint_plus_FlintTextView : NSObject
-- (void)original_dealloc;
 - (void)original_keyDown:(NSEvent*)event;
 @end
 
 @implementation flint_plus_FlintTextView
-- (void)original_dealloc
-{
-    flint_plus_fake_ivar_dealloc(self);
-    [self original_dealloc];
-}
 
 #define KEY_ENTER 36
 #define KEY_UP    126
