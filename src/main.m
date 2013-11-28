@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <objc/runtime.h>
-#include "flint/FlintAppDelegate.h"
-#include "flint/FlintTextView.h"
+#include "flint.h"
 #include "hackery.h"
 
 FlintAppDelegate*

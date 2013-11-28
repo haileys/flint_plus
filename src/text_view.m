@@ -1,7 +1,7 @@
 #import <AppKit/AppKit.h>
-#import "flint/FlintTextView.h"
-#import "hackery.h"
 #import "fake_ivar.h"
+#import "flint.h"
+#import "hackery.h"
 
 static NSMutableArray*
 get_history(id object)
