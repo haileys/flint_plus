@@ -53,7 +53,11 @@ trim(NSString* str)
 static void
 join_command(NSString* message)
 {
-    NSString* room_name = trim([message substringFromIndex:6]);
+    NSString* room_name = trim([message substringFromIndex:strlen("/join ")]);
+
+    if([room_name characterAtIndex:0] == '+') {
+        room_name = [room_name substringFromIndex:1];
+    }
 
     for(FlintCampfireRoom* room in [[current_room() account] rooms]) {
         if([[room name] isEqualToString: room_name]) {
