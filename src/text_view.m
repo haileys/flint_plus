@@ -26,16 +26,59 @@ set_position(id object, int position)
     flint_plus_set_fake_ivar(object, @"position", [NSNumber numberWithInt:position]);
 }
 
+static FlintWindowController*
+current_window_controller()
+{
+    return [[flint windowControllersForActiveSpace] firstObject];
+}
+
+static FlintViewController*
+current_view_controller()
+{
+    return [current_window_controller() activeViewController];
+}
+
+static FlintRoomController*
+current_room()
+{
+    return (FlintRoomController*)current_view_controller();
+}
+
+static NSString*
+trim(NSString* str)
+{
+    return [str stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+}
+
+static void
+join_command(NSString* message)
+{
+    NSString* room_name = trim([message substringFromIndex:6]);
+
+    for(FlintCampfireRoom* room in [[current_room() account] rooms]) {
+        if([[room name] isEqualToString: room_name]) {
+            [current_window_controller() loadRoom:room];
+        }
+    }
+}
+
 static bool
 on_message_sent(FlintTextView* text_view)
 {
     set_position(text_view, 0);
 
-    NSMutableAttributedString* copy = [[NSMutableAttributedString alloc] init];
-    [copy setAttributedString:[text_view textStorage]];
+    NSMutableAttributedString* message = [[NSMutableAttributedString alloc] init];
+    [message setAttributedString:[text_view textStorage]];
 
     NSMutableArray* history = get_history(text_view);
-    [history insertObject:copy atIndex:0];
+    [history insertObject:message atIndex:0];
+
+    NSString* str = [message string];
+
+    if([str hasPrefix:@"/join "]) {
+        join_command(str);
+        return false;
+    }
 
     return true;
 }
