@@ -50,14 +50,22 @@ trim(NSString* str)
     return [str stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
 }
 
-static void
-join_command(NSString* message)
+static NSString*
+room_name_from_join_command(NSString* message)
 {
     NSString* room_name = trim([message substringFromIndex:strlen("/join ")]);
 
     if([room_name characterAtIndex:0] == '+') {
         room_name = [room_name substringFromIndex:1];
     }
+
+    return room_name;
+}
+
+static void
+join_command(NSString* message)
+{
+    NSString* room_name = room_name_from_join_command(message);
 
     for(FlintCampfireRoom* room in [[current_room() account] rooms]) {
         if([[room name] isEqualToString: room_name]) {
@@ -131,6 +139,7 @@ history_down(FlintTextView* text_view)
 #define KEY_ENTER 36
 #define KEY_UP    126
 #define KEY_DOWN  125
+#define KEY_TAB   48
 
 - (void)keyDown:(NSEvent*)event
 {
@@ -151,6 +160,20 @@ history_down(FlintTextView* text_view)
     } else if(key_code == KEY_DOWN) {
         history_down(ftv);
         return;
+    } else if(key_code == KEY_TAB) {
+        if([[[ftv textStorage] string] hasPrefix:@"/join "]) {
+            NSString* prefix = room_name_from_join_command([[ftv textStorage] string]);
+            for(FlintCampfireRoom* room in [[current_room() account] rooms]) {
+                NSString* room_name = [room name];
+                if([room_name hasPrefix:prefix]) {
+                    NSMutableAttributedString* rest = [[NSMutableAttributedString alloc] initWithString:[room_name substringFromIndex:[prefix length]]];
+                    int offset = [[ftv textStorage] length];
+                    [[ftv textStorage] appendAttributedString:rest];
+                    [ftv setSelectedRange:(NSRange){offset, [rest length]}];
+                    return;
+                }
+            }
+        }
     }
 
     [self original_keyDown: event];
