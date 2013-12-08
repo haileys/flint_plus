@@ -68,7 +68,7 @@ join_command(NSString* message)
     NSString* room_name = room_name_from_join_command(message);
 
     for(FlintCampfireRoom* room in [[current_room() account] rooms]) {
-        if([[[room name] lowercaseString] isEqualToString: [room_name lowercaseString]]) {
+        if([[room name] isEqualToString: room_name]) {
             [current_window_controller() loadRoom:room];
         }
     }
@@ -165,7 +165,7 @@ history_down(FlintTextView* text_view)
             NSString* prefix = room_name_from_join_command([[ftv textStorage] string]);
             for(FlintCampfireRoom* room in [[current_room() account] rooms]) {
                 NSString* room_name = [room name];
-                if([[room_name lowercaseString] hasPrefix:[prefix lowercaseString]]) {
+                if([room_name hasPrefix:prefix]) {
                     NSMutableAttributedString* rest = [[NSMutableAttributedString alloc] initWithString:[room_name substringFromIndex:[prefix length]]];
                     int offset = [[ftv textStorage] length];
                     [[ftv textStorage] appendAttributedString:rest];
