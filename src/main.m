@@ -36,5 +36,5 @@ __attribute__((constructor)) void
 flint_plus_main()
 {
     old_sigalrm = signal(SIGALRM, sigalrm);
-    alarm(1);
+    alarm(2);
 }
