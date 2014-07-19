@@ -8,7 +8,6 @@ get_fake_ivar_dict(id object)
 {
     if(fake_ivar_dict == NULL) {
         fake_ivar_dict = [NSMutableDictionary dictionary];
-        [fake_ivar_dict retain];
     }
 
     id key = [NSNumber numberWithInt:(int)object];

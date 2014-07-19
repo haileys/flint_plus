@@ -3,16 +3,19 @@
 #import "flint.h"
 #import "hackery.h"
 
-static NSString*
-md5(NSString* str)
+static NSString* md5(NSString* str)
 {
     const char* cstr = [str UTF8String];
+
     unsigned char digest[CC_MD5_DIGEST_LENGTH];
+
     CC_MD5(cstr, strlen(cstr), digest);
+
     NSMutableString* retn = [NSMutableString stringWithCapacity:CC_MD5_DIGEST_LENGTH*2];
     for(int i = 0; i < CC_MD5_DIGEST_LENGTH; i++) {
         [retn appendFormat:@"%02x", digest[i]];
     }
+
     return retn;
 }
 
@@ -24,8 +27,13 @@ md5(NSString* str)
 - (void)fetchAvatar
 {
     FlintCampfireUser* user = (FlintCampfireUser*)self;
-    NSString* url = [NSString stringWithFormat:@"https://secure.gravatar.com/avatar/%@", md5([user email])];
+    NSString* md5_sum = md5([user email]);
+    NSString* url = [NSString stringWithFormat:@"https://secure.gravatar.com/avatar/%@", md5_sum];
+
     [user setAvatarURL:[NSURL URLWithString:url]];
+
+    [md5_sum release];
+    [url release];
     [self original_fetchAvatar];
 }
 @end
